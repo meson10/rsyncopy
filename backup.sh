@@ -8,12 +8,13 @@ DATE=`date +%Y%m%d`
 DEST="backup-${DATE}"
 
 # Find latest directory and copy it first.
-LAST_DIR=$(find /mnt -maxdepth 1 -name 'backup-*' -type d | sort -nr | head -1 | xargs basename)
+LAST_DIR=$(find /mnt -maxdepth 1 -name 'backup-*' -type d | sort -nr | head -1)
 
 if [[ -z "$LAST_DIR" ]]; then
   # Otherwise create a directory.
   sudo mkdir -p /mnt/${DEST}
 else
+  LAST_DIR=$(basename $LAST_DIR)
   [[ "$LAST_DIR" == "$DEST" ]] || (sudo rsync -aAxh --progress /mnt/${LAST_DIR} /mnt/${DEST})
 fi
 
