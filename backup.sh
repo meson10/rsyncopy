@@ -14,9 +14,9 @@ if [[ -z "$LAST_DIR" ]]; then
   # Otherwise create a directory.
   sudo mkdir -p /mnt/${DEST}
 else
-  [[ "$LAST_DIR" == "$DEST" ]] || (sudo cp -r /mnt/${LAST_DIR} /mnt/${DEST})
+  [[ "$LAST_DIR" == "$DEST" ]] || (sudo rsync -aAxh --progress /mnt/${LAST_DIR} /mnt/${DEST})
 fi
 
 # Rsync the contents and exclude these paths. Also deletes any entries that were
 # deleted at source.
-sudo rsync -aAX --progress --delete=before --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/home/*/.cache/chromium/*","/home/*/.local/share/Trash/*","/home/*/.gvfs","/home/*/.thumbnails/*","/home/*/.cache/mozilla/*"} / /mnt/${DEST}/
+sudo rsync -aAXh --progress --delete=before --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found","/home/*/.cache/chromium/*","/home/*/.local/share/Trash/*","/home/*/.gvfs","/home/*/.thumbnails/*","/home/*/.cache/mozilla/*"} / /mnt/${DEST}/
